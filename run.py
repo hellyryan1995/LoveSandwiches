@@ -1,6 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
-"""from pprint import pprint"""
+# from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -34,10 +34,25 @@ def get_sales_data():
     return sales_data
 
 
+def get_last_5_enteries_sales():
+    """
+    Collects collumns of data from sales worksheet, collecting the last 5 
+    enteries for each sandwich and returns the data as a list of lists.
+    """  
+    sales = SHEET.worksheet("sales")
+
+    columns = []
+    for ind in range(1, 7):
+        column = sales.col_values(ind)
+        columns.append(column[-5:])
+    
+    return columns
+
+
 def validate_data(values):
     """
-    Inside the try, converts all string value into integers raises ValueError 
-    if string cannot be conveted into int,
+    Inside the try, converts all string value into integers raises 
+    ValueError if string cannot be conveted into int,
     or if there arent exactly 6 values.
     """
     try:
@@ -117,4 +132,6 @@ def main():
 
 
 print("Welcome to love sandwiches data automation")
-main()
+# main()
+
+sales_columns = get_last_5_enteries_sales()
